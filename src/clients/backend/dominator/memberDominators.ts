@@ -1,10 +1,34 @@
+export type MemberDominator = {
+    id: number,
+    profile: number,
+    discord_log_channel: string | null,
+    discord_notify_target: string | null,
+
+    crime_coefficient_100_action: number,
+    crime_coefficient_300_action: number,
+    toxicity_action: number,
+    toxicity_threshold: number,
+    severe_toxicity_action: number,
+    severe_toxicity_threshold: number,
+    identity_attack_action: number,
+    identity_attack_threshold: number,
+    insult_action: number,
+    insult_threshold: number,
+    threat_action: number,
+    threat_threshold: number,
+    profanity_action: number,
+    profanity_threshold: number,
+    sexually_explicit_action: number,
+    sexually_explicit_threshold: number
+}
+
 class MemberDominators {
-    url;
+    url: string;
     constructor(url = `${process.env.BACKEND_URL}/dominator/member`) {
         this.url = url;
     }
 
-    async get(communityID: string) {
+    async get(communityID: string): Promise<MemberDominator | undefined> {
         try {
             const response = await fetch(`${this.url}?id=${communityID}`, {
                 method: "GET",
@@ -38,7 +62,7 @@ class MemberDominators {
         }
     }
 
-    async update(data: Object) {
+    async update(data: Partial<MemberDominator>) {
         try {
             const response = await fetch(this.url, {
                 method: "PUT",
@@ -72,5 +96,4 @@ class MemberDominators {
     }
 }
 
-const memberDominators = new MemberDominators();
-export default memberDominators;
+export const memberDominators = new MemberDominators();

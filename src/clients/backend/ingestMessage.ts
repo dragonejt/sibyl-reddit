@@ -1,6 +1,11 @@
-export default async function ingestMessage(message: object) {
+import { KeyValueStorage } from "@devvit/public-api";
+import { MessageAnalysis } from "../perspectiveAPI.js";
+
+const kvstore = new KeyValueStorage();
+
+export default async function ingestMessage(message: MessageAnalysis) {
     try {
-        const response = await fetch(`${process.env.BACKEND_URL}/psychopass/message`, {
+        const response = await fetch(`${kvstore.get("BACKEND_URL")}/psychopass/message`, {
             method: "POST",
             headers: {
                 "Content-type": "application/json",
@@ -9,7 +14,7 @@ export default async function ingestMessage(message: object) {
             },
             body: JSON.stringify(message),
         });
-        if (!response.ok) return response.status
+        if (!response.ok) throw new Error(`Ingest Message: ${response.status} ${response.statusText}`);
     } catch (error) {
         console.error(error);
     }

@@ -1,10 +1,27 @@
+export type CommunityPsychoPass = {
+    id: number,
+    platform: string,
+    platform_id: string,
+    users: Array<number>,
+
+    area_stress_level: {
+        toxicity: number,
+        severe_toxicity: number,
+        identity_attack: number,
+        insult: number,
+        threat: number,
+        profanity: number,
+        sexually_explicit: string
+    }
+}
+
 class CommunityPsychoPasses {
-    url;
+    url: string;
     constructor(url = `${process.env.BACKEND_URL}/psychopass/community`) {
         this.url = url;
     }
 
-    async get(communityID: string) {
+    async get(communityID: string): Promise<CommunityPsychoPass | undefined> {
         try {
             const response = await fetch(`${this.url}?id=${communityID}`, {
                 method: "GET",
@@ -56,5 +73,4 @@ class CommunityPsychoPasses {
 
 }
 
-const communityPsychoPasses = new CommunityPsychoPasses();
-export default communityPsychoPasses;
+export const communityPsychoPasses = new CommunityPsychoPasses();

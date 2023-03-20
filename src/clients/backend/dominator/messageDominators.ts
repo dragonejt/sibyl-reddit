@@ -1,10 +1,32 @@
+export type MessageDominator = {
+    id: number,
+    profile: number,
+    discord_log_channel: string | null,
+    discord_notify_target: string | null,
+
+    toxicity_action: number,
+    toxicity_threshold: number,
+    severe_toxicity_action: number,
+    severe_toxicity_threshold: number,
+    identity_attack_action: number,
+    identity_attack_threshold: number,
+    insult_action: number,
+    insult_threshold: number,
+    threat_action: number,
+    threat_threshold: number,
+    profanity_action: number,
+    profanity_threshold: number,
+    sexually_explicit_action: number,
+    sexually_explicit_threshold: number
+}
+
 class MessageDominators {
-    url;
+    url: string;
     constructor(url = `${process.env.BACKEND_URL}/dominator/message`) {
         this.url = url;
     }
 
-    async get(communityID: string) {
+    async get(communityID: string): Promise<MessageDominator | undefined> {
         try {
             const response = await fetch(`${this.url}?id=${communityID}`, {
                 method: "GET",
@@ -38,7 +60,7 @@ class MessageDominators {
         }
     }
 
-    async update(data: object) {
+    async update(data: Partial<MessageDominator>) {
         try {
             const response = await fetch(this.url, {
                 method: "PUT",
@@ -72,5 +94,4 @@ class MessageDominators {
     }
 }
 
-const messageDominators = new MessageDominators();
-export default messageDominators;
+export const messageDominators = new MessageDominators();
