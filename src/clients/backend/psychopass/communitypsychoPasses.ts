@@ -1,76 +1,60 @@
+import env from "../../../env.js";
+
 export type CommunityPsychoPass = {
-    id: number,
-    platform: string,
-    platform_id: string,
-    users: Array<number>,
+    id: number
+    community: number
+    users: number[]
 
     area_stress_level: {
-        toxicity: number,
-        severe_toxicity: number,
-        identity_attack: number,
-        insult: number,
-        threat: number,
-        profanity: number,
-        sexually_explicit: string
+        toxicity: number
+        severe_toxicity: number
+        identity_attack: number
+        insult: number
+        threat: number
+        profanity: number
+        sexually_explicit: number
     }
-}
+};
 
 class CommunityPsychoPasses {
-    url: string;
-    constructor(url = `${process.env.BACKEND_URL}/psychopass/community`) {
-        this.url = url;
-    }
+    url = `${env.BACKEND_URL!}/psychopass/community`;
 
-    async get(communityID: string): Promise<CommunityPsychoPass | undefined> {
+    async read(communityID: string): Promise<CommunityPsychoPass | undefined> {
         try {
             const response = await fetch(`${this.url}?id=${communityID}`, {
                 method: "GET",
                 headers: {
-                    "Content-type": "application/json",
-                    "User-Agent": `sibyl-discord/${process.env.npm_package_version} node.js/${process.version}`,
-                    "Authorization": `Token ${process.env.BACKEND_API_KEY}`
+                    "Accept": "application/json",
+                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
+                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 }
             });
             if (!response.ok) throw new Error(`GET ${this.url}?id=${communityID}: ${response.status} ${response.statusText}`);
-            return response.json();
+            return await response.json();
         } catch (error) {
             console.error(error);
         }
     }
 
-    async create(communityID: string) {
+    // For Removing a User Psycho-Pass from a Community Psycho-Pass Only
+    async update(communityID: string, userID: string): Promise<CommunityPsychoPass | undefined> {
         try {
             const response = await fetch(this.url, {
-                method: "POST",
+                method: "PUT",
                 headers: {
-                    "Content-type": "application/json",
-                    "User-Agent": `sibyl-discord/${process.env.npm_package_version} node.js/${process.version}`,
-                    "Authorization": `Token ${process.env.BACKEND_API_KEY}`
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
+                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 },
-                body: JSON.stringify({ communityID })
+                body: JSON.stringify({ communityID, userID })
             });
-            if (!response.ok) throw new Error(`POST ${this.url}: ${response.status} ${response.statusText}`);
+            if (!response.ok) throw new Error(`PUT ${this.url}: ${response.status} ${response.statusText}`);
+            return await response.json();
         } catch (error) {
             console.error(error);
         }
     }
-
-    async delete(communityID: string) {
-        try {
-            const response = await fetch(`${this.url}?id=${communityID}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-type": "application/json",
-                    "User-Agent": `sibyl-discord/${process.env.npm_package_version} node.js/${process.version}`,
-                    "Authorization": `Token ${process.env.BACKEND_API_KEY}`
-                }
-            });
-            if (!response.ok) throw new Error(`DELETE ${this.url}?id=${communityID}: ${response.status} ${response.statusText}`);
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
 }
 
 export const communityPsychoPasses = new CommunityPsychoPasses();

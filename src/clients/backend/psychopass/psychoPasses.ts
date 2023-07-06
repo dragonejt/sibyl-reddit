@@ -1,45 +1,42 @@
-type PsychoPass = {
-    id: number,
-    platform: string,
-    platform_id: string,
-    last_flag: string,
-    messages: number,
-    psycho_hazard: boolean,
+import env from "../../../env.js";
 
-    toxicity: number,
-    severe_toxicity: number,
-    identity_attack: number,
-    insult: number,
-    threat: number,
-    profanity: number,
-    sexually_explicit: string,
-    crime_coefficient: number,
+export type PsychoPass = {
+    id: number
+    platform: number
+    user_id: string
+    messages: number
+    psycho_hazard: boolean
+
+    toxicity: number
+    severe_toxicity: number
+    identity_attack: number
+    insult: number
+    threat: number
+    profanity: number
+    sexually_explicit: number
+    crime_coefficient: number
     hue: string
-}
+};
 
 class PsychoPasses {
-    url: string;
-    constructor(url = `${process.env.BACKEND_URL}/psychopass/user`) {
-        this.url = url;
-    }
+    url = `${env.BACKEND_URL!}/psychopass/user`;
 
-    async get(userID: string): Promise<PsychoPass | undefined> {
+    async read(userID: string): Promise<PsychoPass | undefined> {
         try {
             const response = await fetch(`${this.url}?id=${userID}`, {
                 method: "GET",
                 headers: {
-                    "Content-type": "application/json",
-                    "User-Agent": `sibyl-discord/${process.env.npm_package_version} node.js/${process.version}`,
-                    "Authorization": `Token ${process.env.BACKEND_API_KEY}`
+                    "Accept": "application/json",
+                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
+                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 }
             });
             if (!response.ok) throw new Error(`GET ${this.url}?id=${userID}: ${response.status} ${response.statusText}`);
-            return response.json();
+            return await response.json();
         } catch (error) {
             console.error(error);
         }
     }
 }
 
-const psychoPasses = new PsychoPasses();
-export default psychoPasses;
+export const psychoPasses = new PsychoPasses();

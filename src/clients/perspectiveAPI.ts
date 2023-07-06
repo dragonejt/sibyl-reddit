@@ -1,36 +1,38 @@
-import { KeyValueStorage } from "@devvit/public-api";
+import env from "../env.js"
 
 type AttributeScore = {
     summaryScore: {
-        value: number;
-        type: string;
+        value: number
+        type: string
     }
+};
+
+export type AttributeScores = {
+    TOXICITY: AttributeScore
+    SEVERE_TOXICITY: AttributeScore
+    IDENTITY_ATTACK: AttributeScore
+    INSULT: AttributeScore
+    THREAT: AttributeScore
+    PROFANITY: AttributeScore
+    SEXUALLY_EXPLICIT: AttributeScore
 }
 
 export type MessageAnalysis = {
-    attributeScores: {
-        TOXICITY: AttributeScore,
-        SEVERE_TOXICITY: AttributeScore,
-        IDENTITY_ATTACK: AttributeScore,
-        INSULT: AttributeScore,
-        THREAT: AttributeScore,
-        PROFANITY: AttributeScore,
-        SEXUALLY_EXPLICIT: AttributeScore
-    },
-    languages: Array<string>,
-    userID?: string,
+    attributeScores: AttributeScores
+    languages: string[]
+    clientToken?: string
+    userID?: string
     communityID?: string
-}
+};
 
-const kvstore = new KeyValueStorage();
-
-export const analyzeComment = async (comment: string): Promise<MessageAnalysis | undefined> => {
+export async function analyzeComment(comment: string): Promise<MessageAnalysis | undefined> {
     try {
         const response = await fetch(
-            `https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${kvstore.get("PERSPECTIVE_API_KEY")}`,
+            `https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${env.PERSPECTIVE_API_KEY!}`,
             {
                 method: "POST",
                 headers: {
+                    "Accept": "application/json",
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
@@ -46,12 +48,38 @@ export const analyzeComment = async (comment: string): Promise<MessageAnalysis |
                         THREAT: {},
                         SEXUALLY_EXPLICIT: {}
                     },
-                    languages: ["en"]
+                    languages: ["en"],
+                    clientToken: "sibyl-reddit"
                 })
-        });
+            });
         if (!response.ok) throw new Error(`Perspective API Analyze Comment:  ${response.status} ${response.statusText}`);
-        return response.json();
-        
+        return await response.json();
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function suggestCommentScore(comment: string, attributeScores: Partial<AttributeScores>): Promise<MessageAnalysis | undefined> {
+    try {
+        const response = await fetch(
+            `https://commentanalyzer.googleapis.com/v1alpha1/comments:suggestscore?key=${env.PERSPECTIVE_API_KEY!}`,
+            {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    comment: {
+                        text: comment
+                    },
+                    attributeScores,
+                    languages: ["en"],
+                    clientToken: "sibyl-reddit"
+                })
+            });
+        if (!response.ok) throw new Error(`Perspective API Suggest Comment Score:  ${response.status} ${response.statusText}`);
+        return await response.json();
     } catch (error) {
         console.error(error);
     }
