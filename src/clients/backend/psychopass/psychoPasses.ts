@@ -19,7 +19,7 @@ export type PsychoPass = {
 };
 
 class PsychoPasses {
-    url = `${env.BACKEND_URL!}/psychopass/user`;
+    url = `${env.BACKEND_URL}/psychopass/user`;
 
     async read(userID: string): Promise<PsychoPass | undefined> {
         try {
@@ -27,8 +27,8 @@ class PsychoPasses {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
-                    "User-Agent": `sibyl-reddit node.js`,
-                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
+                    "User-Agent": "sibyl-reddit Devvit",
+                    "Authorization": `Token ${env.BACKEND_API_KEY}`
                 }
             });
             if (!response.ok) throw new Error(`GET ${this.url}?id=${userID}: ${response.status} ${response.statusText}`);

@@ -17,7 +17,7 @@ export type CommunityPsychoPass = {
 };
 
 class CommunityPsychoPasses {
-    url = `${env.BACKEND_URL!}/psychopass/community`;
+    url = `${env.BACKEND_URL}/psychopass/community`;
 
     async read(communityID: string): Promise<CommunityPsychoPass | undefined> {
         try {
@@ -25,8 +25,8 @@ class CommunityPsychoPasses {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
-                    "User-Agent": `sibyl-reddit node.js`,
-                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
+                    "User-Agent": "sibyl-reddit Devvit",
+                    "Authorization": `Token ${env.BACKEND_API_KEY}`
                 }
             });
             if (!response.ok) throw new Error(`GET ${this.url}?id=${communityID}: ${response.status} ${response.statusText}`);
@@ -44,8 +44,8 @@ class CommunityPsychoPasses {
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
-                    "User-Agent": `sibyl-reddit node.js`,
-                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
+                    "User-Agent": "sibyl-reddit Devvit",
+                    "Authorization": `Token ${env.BACKEND_API_KEY}`
                 },
                 body: JSON.stringify({ communityID, userID })
             });

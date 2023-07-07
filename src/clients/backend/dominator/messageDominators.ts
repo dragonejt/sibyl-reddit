@@ -22,7 +22,7 @@ export type MessageDominator = {
 };
 
 class MessageDominators {
-    url = `${env.BACKEND_URL!}/dominator/message`;
+    url = `${env.BACKEND_URL}/dominator/message`;
 
     async read(communityID: string): Promise<MessageDominator | undefined> {
         try {
@@ -30,8 +30,8 @@ class MessageDominators {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
-                    "User-Agent": `sibyl-reddit node.js`,
-                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
+                    "User-Agent": "sibyl-reddit Devvit",
+                    "Authorization": `Token ${env.BACKEND_API_KEY}`
                 }
             });
             if (!response.ok) throw new Error(`GET ${this.url}?id=${communityID}: ${response.status} ${response.statusText}`);
@@ -48,8 +48,8 @@ class MessageDominators {
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
-                    "User-Agent": `sibyl-reddit node.js`,
-                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
+                    "User-Agent": "sibyl-reddit Devvit",
+                    "Authorization": `Token ${env.BACKEND_API_KEY}`
                 },
                 body: JSON.stringify(data)
             });
@@ -65,8 +65,8 @@ class MessageDominators {
             const response = await fetch(`${this.url}?id=${communityID}`, {
                 method: "DELETE",
                 headers: {
-                    "User-Agent": `sibyl-reddit node.js`,
-                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
+                    "User-Agent": "sibyl-reddit Devvit",
+                    "Authorization": `Token ${env.BACKEND_API_KEY}`
                 }
             });
             if (!response.ok) throw new Error(`DELETE ${this.url}?id=${communityID}: ${response.status} ${response.statusText}`);

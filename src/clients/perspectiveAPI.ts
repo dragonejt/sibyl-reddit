@@ -28,7 +28,7 @@ export type MessageAnalysis = {
 export async function analyzeComment(comment: string): Promise<MessageAnalysis | undefined> {
     try {
         const response = await fetch(
-            `https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${env.PERSPECTIVE_API_KEY!}`,
+            `https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${env.PERSPECTIVE_API_KEY}`,
             {
                 method: "POST",
                 headers: {
@@ -62,7 +62,7 @@ export async function analyzeComment(comment: string): Promise<MessageAnalysis |
 export async function suggestCommentScore(comment: string, attributeScores: Partial<AttributeScores>): Promise<MessageAnalysis | undefined> {
     try {
         const response = await fetch(
-            `https://commentanalyzer.googleapis.com/v1alpha1/comments:suggestscore?key=${env.PERSPECTIVE_API_KEY!}`,
+            `https://commentanalyzer.googleapis.com/v1alpha1/comments:suggestscore?key=${env.PERSPECTIVE_API_KEY}`,
             {
                 method: "POST",
                 headers: {
