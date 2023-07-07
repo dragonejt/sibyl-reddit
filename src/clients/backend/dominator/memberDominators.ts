@@ -32,7 +32,7 @@ class MemberDominators {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
-                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
+                    "User-Agent": `sibyl-reddit node.js`,
                     "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 }
             });
@@ -50,7 +50,7 @@ class MemberDominators {
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
-                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
+                    "User-Agent": `sibyl-reddit node.js`,
                     "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 },
                 body: JSON.stringify(data)
@@ -67,7 +67,7 @@ class MemberDominators {
             const response = await fetch(`${this.url}?id=${communityID}`, {
                 method: "DELETE",
                 headers: {
-                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
+                    "User-Agent": `sibyl-reddit node.js`,
                     "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 }
             });

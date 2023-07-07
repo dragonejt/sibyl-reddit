@@ -27,7 +27,7 @@ class PsychoPasses {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
-                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
+                    "User-Agent": `sibyl-reddit node.js`,
                     "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 }
             });
