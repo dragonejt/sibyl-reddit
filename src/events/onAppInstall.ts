@@ -6,7 +6,7 @@ import communities from "../clients/backend/communities.js";
 const onAppInstall: Devvit.AppInstallConfig = {
     event: Devvit.Trigger.AppInstall,
     async handler(request: AppInstall) {
-        console.log(`New Community: ${request.subreddit?.id!} has install SibylMod`);
+        console.log(`Community: ${request.subreddit?.id!} has installed SibylMod`);
         communities.create(request.subreddit?.id!);
     }
 }
