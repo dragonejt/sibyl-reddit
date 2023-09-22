@@ -5,7 +5,7 @@ import onAppInstall from './events/onAppInstall.js';
 
 Devvit.configure({
     http: true
-  });
+});
 
 Devvit.addTrigger(onPostSubmit);
 Devvit.addTrigger(onAppInstall);
