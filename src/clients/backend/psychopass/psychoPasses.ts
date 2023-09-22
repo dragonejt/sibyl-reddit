@@ -1,6 +1,4 @@
-import env from "../../../env.js";
-
-export type PsychoPass = {
+export interface PsychoPass {
     id: number
     platform: number
     user_id: string
@@ -16,19 +14,19 @@ export type PsychoPass = {
     sexually_explicit: number
     crime_coefficient: number
     hue: string
-};
+}
 
-class PsychoPasses {
-    url = `${env.BACKEND_URL}/psychopass/user`;
+export class PsychoPasses {
+    static url = `${process.env.BACKEND_URL!}/psychopass/user`;
 
-    async read(userID: string): Promise<PsychoPass | undefined> {
+    static async read(userID: string): Promise<PsychoPass | undefined> {
         try {
             const response = await fetch(`${this.url}?id=${userID}`, {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
-                    "User-Agent": "sibyl-reddit Devvit",
-                    "Authorization": `Token ${env.BACKEND_API_KEY}`
+                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
+                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
                 }
             });
             if (!response.ok) throw new Error(`GET ${this.url}?id=${userID}: ${response.status} ${response.statusText}`);
@@ -38,5 +36,3 @@ class PsychoPasses {
         }
     }
 }
-
-export const psychoPasses = new PsychoPasses();

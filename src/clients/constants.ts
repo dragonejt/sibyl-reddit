@@ -36,8 +36,8 @@ export function buildIntegerChoice(choiceName: string, choiceValue: number) {
     };
 }
 
-export type Reason = {
+export interface Reason {
     attribute: string
     score: number
     threshold: number
-};
+}

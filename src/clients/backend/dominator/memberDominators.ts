@@ -1,6 +1,4 @@
-import env from "../../../env.js";
-
-export type MemberDominator = {
+export interface MemberDominator {
     id: number
     community: number
     communityID: string | null
@@ -21,19 +19,19 @@ export type MemberDominator = {
     profanity_threshold: number
     sexually_explicit_action: number
     sexually_explicit_threshold: number
-};
+}
 
-class MemberDominators {
-    url = `${env.BACKEND_URL}/dominator/member`;
+export class MemberDominators {
+    static url = `${process.env.BACKEND_URL!}/dominator/member`;
 
-    async read(communityID: string): Promise<MemberDominator | undefined> {
+    static async read(communityID: string): Promise<MemberDominator | undefined> {
         try {
             const response = await fetch(`${this.url}?id=${communityID}`, {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
-                    "User-Agent": "sibyl-reddit Devvit",
-                    "Authorization": `Token ${env.BACKEND_API_KEY}`
+                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
+                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
                 }
             });
             if (!response.ok) throw new Error(`GET ${this.url}?id=${communityID}: ${response.status} ${response.statusText}`);
@@ -43,15 +41,15 @@ class MemberDominators {
         }
     }
 
-    async update(data: Partial<MemberDominator>): Promise<MemberDominator | undefined> {
+    static async update(data: Partial<MemberDominator>): Promise<MemberDominator | undefined> {
         try {
             const response = await fetch(this.url, {
                 method: "PUT",
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
-                    "User-Agent": "sibyl-reddit Devvit",
-                    "Authorization": `Token ${env.BACKEND_API_KEY}`
+                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
+                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
                 },
                 body: JSON.stringify(data)
             });
@@ -62,13 +60,13 @@ class MemberDominators {
         }
     }
 
-    async delete(communityID: string) {
+    static async delete(communityID: string) {
         try {
             const response = await fetch(`${this.url}?id=${communityID}`, {
                 method: "DELETE",
                 headers: {
-                    "User-Agent": "sibyl-reddit Devvit",
-                    "Authorization": `Token ${env.BACKEND_API_KEY}`
+                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
+                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
                 }
             });
             if (!response.ok) throw new Error(`DELETE ${this.url}?id=${communityID}: ${response.status} ${response.statusText}`);
@@ -77,5 +75,3 @@ class MemberDominators {
         }
     }
 }
-
-export const memberDominators = new MemberDominators();

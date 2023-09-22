@@ -3,7 +3,9 @@ import { Devvit } from '@devvit/public-api';
 import onPostSubmit from './events/onPostSubmit.js';
 import onAppInstall from './events/onAppInstall.js';
 
-Devvit.use(Devvit.Types.HTTP);
+Devvit.configure({
+    http: true
+  });
 
 Devvit.addTrigger(onPostSubmit);
 Devvit.addTrigger(onAppInstall);

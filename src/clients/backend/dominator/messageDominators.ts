@@ -1,6 +1,4 @@
-import env from "../../../env.js";
-
-export type MessageDominator = {
+export interface MessageDominator {
     id: number
     community: number
     communityID: string | null
@@ -19,19 +17,19 @@ export type MessageDominator = {
     profanity_threshold: number
     sexually_explicit_action: number
     sexually_explicit_threshold: number
-};
+}
 
-class MessageDominators {
-    url = `${env.BACKEND_URL}/dominator/message`;
+export class MessageDominators {
+    static url = `${process.env.BACKEND_URL!}/dominator/message`;
 
-    async read(communityID: string): Promise<MessageDominator | undefined> {
+    static async read(communityID: string): Promise<MessageDominator | undefined> {
         try {
             const response = await fetch(`${this.url}?id=${communityID}`, {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
-                    "User-Agent": "sibyl-reddit Devvit",
-                    "Authorization": `Token ${env.BACKEND_API_KEY}`
+                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
+                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
                 }
             });
             if (!response.ok) throw new Error(`GET ${this.url}?id=${communityID}: ${response.status} ${response.statusText}`);
@@ -41,15 +39,15 @@ class MessageDominators {
         }
     }
 
-    async update(data: Partial<MessageDominator>): Promise<MessageDominator | undefined> {
+    static async update(data: Partial<MessageDominator>): Promise<MessageDominator | undefined> {
         try {
             const response = await fetch(this.url, {
                 method: "PUT",
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
-                    "User-Agent": "sibyl-reddit Devvit",
-                    "Authorization": `Token ${env.BACKEND_API_KEY}`
+                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
+                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
                 },
                 body: JSON.stringify(data)
             });
@@ -60,13 +58,13 @@ class MessageDominators {
         }
     }
 
-    async delete(communityID: string) {
+    static async delete(communityID: string) {
         try {
             const response = await fetch(`${this.url}?id=${communityID}`, {
                 method: "DELETE",
                 headers: {
-                    "User-Agent": "sibyl-reddit Devvit",
-                    "Authorization": `Token ${env.BACKEND_API_KEY}`
+                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
+                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
                 }
             });
             if (!response.ok) throw new Error(`DELETE ${this.url}?id=${communityID}: ${response.status} ${response.statusText}`);
@@ -75,5 +73,3 @@ class MessageDominators {
         }
     }
 }
-
-export const messageDominators = new MessageDominators();

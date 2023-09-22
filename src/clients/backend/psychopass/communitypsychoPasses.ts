@@ -1,6 +1,4 @@
-import env from "../../../env.js";
-
-export type CommunityPsychoPass = {
+export interface CommunityPsychoPass {
     id: number
     community: number
     users: number[]
@@ -14,19 +12,19 @@ export type CommunityPsychoPass = {
         profanity: number
         sexually_explicit: number
     }
-};
+}
 
-class CommunityPsychoPasses {
-    url = `${env.BACKEND_URL}/psychopass/community`;
+export class CommunityPsychoPasses {
+    static url = `${process.env.BACKEND_URL!}/psychopass/community`;
 
-    async read(communityID: string): Promise<CommunityPsychoPass | undefined> {
+    static async read(communityID: string): Promise<CommunityPsychoPass | undefined> {
         try {
             const response = await fetch(`${this.url}?id=${communityID}`, {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
-                    "User-Agent": "sibyl-reddit Devvit",
-                    "Authorization": `Token ${env.BACKEND_API_KEY}`
+                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
+                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
                 }
             });
             if (!response.ok) throw new Error(`GET ${this.url}?id=${communityID}: ${response.status} ${response.statusText}`);
@@ -37,15 +35,15 @@ class CommunityPsychoPasses {
     }
 
     // For Removing a User Psycho-Pass from a Community Psycho-Pass Only
-    async update(communityID: string, userID: string): Promise<CommunityPsychoPass | undefined> {
+    static async update(communityID: string, userID: string): Promise<CommunityPsychoPass | undefined> {
         try {
             const response = await fetch(this.url, {
                 method: "PUT",
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
-                    "User-Agent": "sibyl-reddit Devvit",
-                    "Authorization": `Token ${env.BACKEND_API_KEY}`
+                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
+                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
                 },
                 body: JSON.stringify({ communityID, userID })
             });
@@ -56,5 +54,3 @@ class CommunityPsychoPasses {
         }
     }
 }
-
-export const communityPsychoPasses = new CommunityPsychoPasses();
