@@ -1,3 +1,5 @@
+import env from "../../../env.js";
+
 export interface MemberDominator {
     id: number
     community: number
@@ -22,7 +24,7 @@ export interface MemberDominator {
 }
 
 export class MemberDominators {
-    static url = `${process.env.BACKEND_URL!}/dominator/member`;
+    static url = `${env.BACKEND_URL!}/dominator/member`;
 
     static async read(communityID: string): Promise<MemberDominator | undefined> {
         try {
@@ -30,8 +32,8 @@ export class MemberDominators {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
-                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
-                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
+                    "User-Agent": `sibyl-reddit`,
+                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 }
             });
             if (!response.ok) throw new Error(`GET ${this.url}?id=${communityID}: ${response.status} ${response.statusText}`);
@@ -48,8 +50,8 @@ export class MemberDominators {
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
-                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
-                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
+                    "User-Agent": `sibyl-reddit`,
+                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 },
                 body: JSON.stringify(data)
             });
@@ -65,8 +67,8 @@ export class MemberDominators {
             const response = await fetch(`${this.url}?id=${communityID}`, {
                 method: "DELETE",
                 headers: {
-                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
-                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
+                    "User-Agent": `sibyl-reddit`,
+                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 }
             });
             if (!response.ok) throw new Error(`DELETE ${this.url}?id=${communityID}: ${response.status} ${response.statusText}`);

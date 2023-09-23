@@ -1,3 +1,5 @@
+import env from "../../../env.js";
+
 export interface PsychoPass {
     id: number
     platform: number
@@ -17,7 +19,7 @@ export interface PsychoPass {
 }
 
 export class PsychoPasses {
-    static url = `${process.env.BACKEND_URL!}/psychopass/user`;
+    static url = `${env.BACKEND_URL!}/psychopass/user`;
 
     static async read(userID: string): Promise<PsychoPass | undefined> {
         try {
@@ -25,8 +27,8 @@ export class PsychoPasses {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
-                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
-                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
+                    "User-Agent": `sibyl-reddit`,
+                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 }
             });
             if (!response.ok) throw new Error(`GET ${this.url}?id=${userID}: ${response.status} ${response.statusText}`);

@@ -1,3 +1,5 @@
+import env from "../../../env.js";
+
 export interface CommunityPsychoPass {
     id: number
     community: number
@@ -15,7 +17,7 @@ export interface CommunityPsychoPass {
 }
 
 export class CommunityPsychoPasses {
-    static url = `${process.env.BACKEND_URL!}/psychopass/community`;
+    static url = `${env.BACKEND_URL!}/psychopass/community`;
 
     static async read(communityID: string): Promise<CommunityPsychoPass | undefined> {
         try {
@@ -23,8 +25,8 @@ export class CommunityPsychoPasses {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
-                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
-                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
+                    "User-Agent": `sibyl-reddit`,
+                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 }
             });
             if (!response.ok) throw new Error(`GET ${this.url}?id=${communityID}: ${response.status} ${response.statusText}`);
@@ -42,8 +44,8 @@ export class CommunityPsychoPasses {
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
-                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
-                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
+                    "User-Agent": `sibyl-reddit`,
+                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 },
                 body: JSON.stringify({ communityID, userID })
             });

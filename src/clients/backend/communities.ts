@@ -1,3 +1,5 @@
+import env from "../../env.js";
+
 interface Community {
     id: number
     platform: number
@@ -7,7 +9,7 @@ interface Community {
 }
 
 export default class Communities {
-    static url = `${process.env.BACKEND_URL!}/community`;
+    static url = `${env.BACKEND_URL!}/community`;
 
     static async create(communityID: string): Promise<Community | undefined> {
         try {
@@ -16,8 +18,8 @@ export default class Communities {
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
-                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
-                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
+                    "User-Agent": `sibyl-reddit`,
+                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 },
                 body: JSON.stringify({ communityID })
             });
@@ -34,8 +36,8 @@ export default class Communities {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
-                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
-                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
+                    "User-Agent": `sibyl-reddit`,
+                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 }
             });
             if (!response.ok) throw new Error(`GET ${this.url}?id=${communityID}: ${response.status} ${response.statusText}`);
@@ -52,8 +54,8 @@ export default class Communities {
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
-                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
-                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
+                    "User-Agent": `sibyl-reddit`,
+                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 },
                 body: JSON.stringify(data)
             });
@@ -69,8 +71,8 @@ export default class Communities {
             const response = await fetch(`${this.url}?id=${communityID}`, {
                 method: "DELETE",
                 headers: {
-                    "User-Agent": `${process.env.npm_package_name}/${process.env.npm_package_version!} node.js/${process.version}`,
-                    "Authorization": `Token ${process.env.BACKEND_API_KEY!}`
+                    "User-Agent": `sibyl-reddit`,
+                    "Authorization": `Token ${env.BACKEND_API_KEY!}`
                 }
             });
             if (!response.ok) throw new Error(`DELETE ${this.url}?id=${communityID}: ${response.status} ${response.statusText}`);
