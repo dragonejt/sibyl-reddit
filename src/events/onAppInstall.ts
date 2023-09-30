@@ -9,6 +9,6 @@ const onAppInstall: AppInstallDefinition = {
         console.log(`r/${request.subreddit?.name} (${request.subreddit?.id!}) has installed SibylMod`);
         communities.create(request.subreddit?.id!);
     }
-}
+};
 
 export default onAppInstall;

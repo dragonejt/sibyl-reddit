@@ -4,7 +4,8 @@ import onPostSubmit from './events/onPostSubmit.js';
 import onAppInstall from './events/onAppInstall.js';
 
 Devvit.configure({
-    http: true
+    http: true,
+    redditAPI: true
 });
 
 Devvit.addTrigger(onPostSubmit);
