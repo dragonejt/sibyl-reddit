@@ -24,7 +24,7 @@ export async function moderateMessage(event: PostSubmit, context: TriggerContext
     analysis.communityID = event.subreddit!.id;
     ingestMessage(analysis);
 
-    let maxAction = ACTIONS.indexOf("NOOP");
+    let maxAction = ACTIONS.indexOf("NOTIFY");
     const reasons: Reason[] = [];
     for (const attribute in analysis.attributeScores) {
         const score = analysis.attributeScores[attribute as keyof MessageAnalysis["attributeScores"]].summaryScore.value;
@@ -36,8 +36,8 @@ export async function moderateMessage(event: PostSubmit, context: TriggerContext
         }
     }
 
-    if (maxAction === ACTIONS.indexOf("NOOP")) return;
-    if (maxAction >= ACTIONS.indexOf("NOTIFY")) context.reddit.remove(event.post!.id, false);
+    if (maxAction === ACTIONS.indexOf("NOTIFY")) return;
+    if (maxAction >= ACTIONS.indexOf("REMOVE")) context.reddit.remove(event.post!.id, false);
     console.log(`Action: ${ACTIONS[maxAction]} has been taken on @${event.author?.name} (${event.author?.id}) in Server: ${event.subreddit?.name} (${event.subreddit?.id})`);
     if (maxAction === ACTIONS.indexOf("BAN")) context.reddit.banUser({
         username: event.author!.name,
