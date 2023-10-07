@@ -19,10 +19,19 @@ export const onPostSubmit: PostSubmitDefinition = {
 };
 
 export async function moderateMessage(event: PostSubmit, context: TriggerContext, analysis: MessageAnalysis, dominator: MessageDominator) {
+    if (event.author?.id === context.appAccountId || event.subreddit?.nsfw) return;
+
     if (!analysis || !dominator) return;
     analysis.userID = event.author!.id;
     analysis.communityID = event.subreddit!.id;
     ingestMessage(analysis);
+
+    const approvedUsers = await context.reddit.getApprovedUsers({
+        subredditName: event.subreddit!.name,
+        username: event.author!.name
+    }).all()
+
+    if (approvedUsers.length > 0) return;
 
     let maxAction = ACTIONS.indexOf("NOTIFY");
     const reasons: Reason[] = [];
