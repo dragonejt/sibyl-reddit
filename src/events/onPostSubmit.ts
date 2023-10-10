@@ -45,15 +45,19 @@ export async function moderateMessage(event: PostSubmit, context: TriggerContext
         }
     }
 
+    const reason = reasons.map(reason => `${reason.attribute}: ${reason.score} >= ${reason.threshold}`).toString()
+
     if (maxAction === ACTIONS.indexOf("NOTIFY")) return;
     if (maxAction >= ACTIONS.indexOf("REMOVE")) context.reddit.remove(event.post!.id, false);
-    console.log(`Action: ${ACTIONS[maxAction]} has been taken on @${event.author?.name} (${event.author?.id}) in Server: ${event.subreddit?.name} (${event.subreddit?.id})`);
+    console.log(`Action: ${ACTIONS[maxAction]} has been taken on @${event.author?.name} (${event.author?.id}) in Server: ${event.subreddit?.name} (${event.subreddit?.id}) because of ${reasons.map(reason => `${reason.attribute}: ${reason.score} >= ${reason.threshold}`)}`);
     if (maxAction === ACTIONS.indexOf("BAN")) context.reddit.banUser({
         username: event.author!.name,
-        subredditName: event.subreddit!.name
+        subredditName: event.subreddit!.name,
+        reason
     });
     else if (maxAction === ACTIONS.indexOf("MUTE")) context.reddit.muteUser({
         username: event.author!.name,
-        subredditName: event.subreddit!.name
+        subredditName: event.subreddit!.name,
+        note: reason
     });
 }
