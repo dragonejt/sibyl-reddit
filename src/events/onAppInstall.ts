@@ -1,5 +1,4 @@
 import { AppInstallDefinition } from "@devvit/public-api";
-
 import communities from "../clients/backend/communities.js";
 import { AppInstall } from "@devvit/protos";
 
