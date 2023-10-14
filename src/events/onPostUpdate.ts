@@ -1,9 +1,8 @@
 import { PostUpdate } from "@devvit/protos";
 import { PostUpdateDefinition, TriggerContext } from "@devvit/public-api";
 import { analyzeComment } from "../clients/perspectiveAPI.js";
-import { moderateMessage } from "./onPostSubmit.js";
-import { moderateMember } from "./onCommentSubmit.js";
-
+import { moderateMessage } from "./onPostCreate.js";
+import { moderateMember } from "./onCommentCreate.js";
 
 const onPostUpdate: PostUpdateDefinition = {
     event: "PostUpdate",

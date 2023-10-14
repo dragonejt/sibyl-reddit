@@ -1,15 +1,14 @@
-import { CommentSubmit, SubredditV2, UserV2 } from "@devvit/protos";
-import { CommentSubmitDefinition, TriggerContext } from "@devvit/public-api";
+import { CommentCreate, SubredditV2, UserV2 } from "@devvit/protos";
+import { CommentCreateDefinition, TriggerContext } from "@devvit/public-api";
 import { analyzeComment } from "../clients/perspectiveAPI.js";
-import { moderateMessage } from "./onPostSubmit.js";
+import { moderateMessage } from "./onPostCreate.js";
 import { PsychoPass, PsychoPasses } from "../clients/backend/psychopass/psychoPasses.js";
 import { MemberDominator, MemberDominators } from "../clients/backend/dominator/memberDominators.js";
 import { ACTIONS, ATTRIBUTES, Reason } from "../clients/constants.js";
 
-
-export const onCommentSubmit: CommentSubmitDefinition = {
-    event: "CommentSubmit",
-    onEvent: async (event: CommentSubmit, context: TriggerContext) => {
+export const onCommentCreate: CommentCreateDefinition = {
+    event: "CommentCreate",
+    onEvent: async (event: CommentCreate, context: TriggerContext) => {
         console.log(`u/${event.author?.name} (${event.author?.id}) has created a new comment on r/${event.subreddit?.name}/${event.post?.id}`);
         const analysis = await analyzeComment(event.comment?.body!);
 

@@ -2,7 +2,6 @@ import { ModAction } from "@devvit/protos";
 import { ModActionDefinition } from "@devvit/public-api";
 import communities from "../clients/backend/communities.js";
 
-
 const onAppUninstall: ModActionDefinition = {
     event: "ModAction",
     onEvent: async (event: ModAction) => {
