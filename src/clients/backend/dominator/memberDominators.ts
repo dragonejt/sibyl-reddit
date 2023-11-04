@@ -3,7 +3,7 @@ import env from "../../../env.js";
 export interface MemberDominator {
     id: number
     community: number
-    communityID: string | null
+    communityID?: string
 
     crime_coefficient_100_action: number
     crime_coefficient_300_action: number
