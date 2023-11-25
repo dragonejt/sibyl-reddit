@@ -30,7 +30,7 @@ export async function moderateMember(author: UserV2, subreddit: SubredditV2, con
     if (psychoPass === undefined || dominator === undefined) throw new Error("Psycho-Pass or Dominator undefined!");
     if (psychoPass.messages < 25) return;
 
-    let maxAction = ACTIONS.indexOf("NOTIFY");
+    let maxAction = -1;
     const reasons: Reason[] = [];
     for (const attribute of ATTRIBUTES) {
         const score = psychoPass[attribute as keyof PsychoPass] as number;
@@ -59,6 +59,7 @@ export async function moderateMember(author: UserV2, subreddit: SubredditV2, con
 
     const reason = reasons.map(reason => `${reason.attribute}: ${reason.score} >= ${reason.threshold}`).toString()
 
+    if (maxAction < 0) return;
     if (maxAction >= ACTIONS.indexOf("NOTIFY")) context.reddit.modMail.createConversation({
         subredditName: subreddit.name,
         subject: `Flagged u/${author.name} (${author.id})`,
