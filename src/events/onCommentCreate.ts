@@ -11,7 +11,8 @@ export const onCommentCreate: CommentCreateDefinition = {
     onEvent: async (event: CommentCreate, context: TriggerContext) => {
         console.log(`u/${event.author?.name} (${event.author?.id}) has created a new comment on r/${event.subreddit?.name}/${event.post?.id}`);
         const analysis = await analyzeComment(event.comment?.body!);
-
+        console.log(await context.settings.get("PERSPECTIVE_API_KEY"))
+        throw new Error("Sentry Test Error");
         moderateMessage(event.author!, event.subreddit!, event.post!, context, analysis!);
         moderateMember(event.author!, event.subreddit!, context);
     }
