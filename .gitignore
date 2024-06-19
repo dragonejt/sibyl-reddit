@@ -43,6 +43,8 @@ jspm_packages/
 
 # TypeScript v1 declaration files
 typings/
+*.js
+*.js.map
 
 # TypeScript cache
 *.tsbuildinfo
@@ -102,5 +104,6 @@ dist
 
 # TernJS port file
 .tern-port
+
 .vscode/
 env.ts

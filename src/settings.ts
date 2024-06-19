@@ -21,7 +21,7 @@ const settings: SettingsFormField[] = [
         type: "string",
         isSecret: true,
         scope: "app",
-    }
-]
+    },
+];
 
 export default settings;

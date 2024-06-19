@@ -1,41 +1,43 @@
-import env from "../env.js"
+import env from "../env.js";
 
 interface AttributeScore {
     summaryScore: {
-        value: number
-        type: string
-    }
+        value: number;
+        type: string;
+    };
 }
 
 export interface MessageAnalysis {
     attributeScores: {
-        TOXICITY: AttributeScore
-        SEVERE_TOXICITY: AttributeScore
-        IDENTITY_ATTACK: AttributeScore
-        INSULT: AttributeScore
-        THREAT: AttributeScore
-        PROFANITY: AttributeScore
-        SEXUALLY_EXPLICIT: AttributeScore
-    }
-    languages: string[]
-    clientToken?: string
-    userID?: string
-    communityID?: string
+        TOXICITY: AttributeScore;
+        SEVERE_TOXICITY: AttributeScore;
+        IDENTITY_ATTACK: AttributeScore;
+        INSULT: AttributeScore;
+        THREAT: AttributeScore;
+        PROFANITY: AttributeScore;
+        SEXUALLY_EXPLICIT: AttributeScore;
+    };
+    languages: string[];
+    clientToken?: string;
+    userID?: string;
+    communityID?: string;
 }
 
-export async function analyzeComment(comment: string): Promise<MessageAnalysis | undefined> {
+export async function analyzeComment(
+    comment: string
+): Promise<MessageAnalysis | undefined> {
     try {
         const response = await fetch(
             `https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${env.PERSPECTIVE_API_KEY!}`,
             {
                 method: "POST",
                 headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     comment: {
-                        text: comment
+                        text: comment,
                     },
                     requestedAttributes: {
                         TOXICITY: {},
@@ -44,12 +46,16 @@ export async function analyzeComment(comment: string): Promise<MessageAnalysis |
                         INSULT: {},
                         PROFANITY: {},
                         THREAT: {},
-                        SEXUALLY_EXPLICIT: {}
+                        SEXUALLY_EXPLICIT: {},
                     },
-                    clientToken: "sibyl-reddit"
-                })
-            });
-        if (!response.ok) throw new Error(`Perspective API Analyze Comment:  ${response.status} ${response.statusText}`);
+                    clientToken: "sibyl-reddit",
+                }),
+            }
+        );
+        if (!response.ok)
+            throw new Error(
+                `Perspective API Analyze Comment:  ${response.status} ${response.statusText}`
+            );
         return await response.json();
     } catch (error) {
         console.error(error);

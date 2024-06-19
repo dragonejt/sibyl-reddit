@@ -8,11 +8,14 @@ export default async function ingestMessage(message: MessageAnalysis) {
             headers: {
                 "Content-Type": "application/json",
                 "User-Agent": `sibyl-reddit`,
-                "Authorization": `Token ${env.BACKEND_API_KEY!}`
+                Authorization: `Token ${env.BACKEND_API_KEY!}`,
             },
-            body: JSON.stringify(message)
+            body: JSON.stringify(message),
         });
-        if (!response.ok) throw new Error(`Ingest Message: ${response.status} ${response.statusText}`);
+        if (!response.ok)
+            throw new Error(
+                `Ingest Message: ${response.status} ${response.statusText}`
+            );
     } catch (error) {
         console.error(error);
     }

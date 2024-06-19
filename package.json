@@ -3,6 +3,9 @@
   "name": "sibyl-reddit",
   "version": "0.0.0",
   "license": "MPL-2.0",
+  "scripts": {
+    "lint": "npx eslint --fix && npx prettier **/*.ts --write"
+  },
   "type": "module",
   "dependencies": {
     "@devvit/protos": "*",
@@ -11,6 +14,11 @@
   },
   "devDependencies": {
     "@devvit/tsconfig": "*",
-    "typescript": "*"
+    "@eslint/js": "*",
+    "eslint": "*",
+    "globals": "*",
+    "prettier": "*",
+    "typescript": "*",
+    "typescript-eslint": "*"
   }
 }
